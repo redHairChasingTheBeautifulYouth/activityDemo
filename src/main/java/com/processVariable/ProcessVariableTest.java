@@ -16,6 +16,10 @@ import org.junit.Test;
 import java.io.InputStream;
 import java.util.Date;
 
+/**
+ * 流程变量的作用域就是流程实例，不管在哪个阶段设置
+ *
+ */
 public class ProcessVariableTest {
     ProcessEngine pe = ProcessEngines.getDefaultProcessEngine();
     /**
@@ -64,10 +68,24 @@ public class ProcessVariableTest {
     @Test
     public void setVariable(){
         TaskService taskService = pe.getTaskService();
-        String taskId = "2504";
-        taskService.setVariableLocal(taskId,"请假天数" ,3);//与任务Id绑定
-        taskService.setVariable(taskId,"请假日期" ,new Date());
-        taskService.setVariable(taskId,"请假原因" ,"回家探亲");
+        String taskId = "7502";
+        /**  使用基本数据类型设置流程变量  **/
+        //taskService.setVariableLocal(taskId,"请假天数" ,3);//与任务Id绑定
+        //taskService.setVariable(taskId,"请假日期" ,new Date());
+        //taskService.setVariable(taskId,"请假原因" ,"回家探亲");
+
+
+
+        /*   使用javaBean流程变量
+         *   当一个javaBean（实现序列化）放置到流程变量中，要求javaBean属性不能发生变化，否则获取抛出异常
+         *   解决方案，在javaBean中添加版本号
+         *   act_ge_property--资源文件表，存放对象
+         *
+         */
+        Person p = new Person();
+        p.setId(1);
+        p.setName("ceshi");
+        taskService.setVariable(taskId,"人员信息" ,p);
     }
 
 
@@ -81,6 +99,8 @@ public class ProcessVariableTest {
         //获取流程变量，使用基本数据类型
         Integer days = (Integer) taskService.getVariable(taskId,"请假天数");
         System.out.println(days);
+        //获取流程变量，使用javaBean
+        Person p = (Person) taskService.getVariable(taskId,"人员信息");
     }
 
     /**

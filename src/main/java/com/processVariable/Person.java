@@ -5,7 +5,10 @@ package com.processVariable;
  * @date 2018/6/6 20:13
  */
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable{
+
     private Integer id;
     private String name;
 
