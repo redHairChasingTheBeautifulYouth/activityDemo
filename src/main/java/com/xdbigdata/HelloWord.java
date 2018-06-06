@@ -48,10 +48,19 @@ public class HelloWord {
      */
     @Test
     public void findMyTask(){
-         String name = "张三";
+         String name = "李四";
          List<Task> list = pe.getTaskService()//正在执行的任务管理者相关的Service
                  .createTaskQuery()//创建任务查询对象
+                 /**  查询条件  **/
                  .taskAssignee(name)//指定个人任务查询，指定办理人
+                 //.taskCandidateUser()//组任务的办理人查询
+                 //.processDefinitionId()//流程定义id查询
+                 //.processInstanceId()//流程实例id查询
+                 //.executionId()//使用执行对象id查询
+                 /**  排序  **/
+
+
+                 /**  返回结果集  **/
                  .list();
          if(null != list && list.size()>0){
              for (Task task : list){
@@ -74,7 +83,7 @@ public class HelloWord {
     @Test
     public void completeMyTask(){
         //任务ID
-        String taskId = "104";
+        String taskId = "5004";
         pe.getTaskService()//与正在执行的任务管理相关的Serv
                 .complete(taskId);
         System.out.println("完成任务，任务ID"+taskId);
