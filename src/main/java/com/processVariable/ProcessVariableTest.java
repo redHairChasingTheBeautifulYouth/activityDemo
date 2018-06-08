@@ -9,12 +9,14 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.junit.Test;
 
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 流程变量的作用域就是流程实例，不管在哪个阶段设置
@@ -143,5 +145,16 @@ public class ProcessVariableTest {
         pe.getTaskService()//与正在执行的任务管理相关的Serv
                 .complete(taskId);
         System.out.println("完成任务，任务ID"+taskId);
+    }
+
+    /**
+     * 查询流程变量历史表
+     */
+    @Test
+    public void findHistoryProcessVariable(){
+        List<HistoricVariableInstance> list = pe.getHistoryService()
+                .createHistoricVariableInstanceQuery()
+                .variableName("请假天数")
+                .list();
     }
 }
